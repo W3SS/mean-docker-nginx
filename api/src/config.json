@@ -1,0 +1,5 @@
+{
+  "connectionString": "mongodb://database/mongodb",
+  "apiUrl": "http://localhost:3000",
+  "secret": "Thisismyscretkey"
+}

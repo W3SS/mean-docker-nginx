@@ -1,0 +1,23 @@
+FROM node:14.5.0-alpine3.11
+
+# Copy dependency definitions
+COPY package.json yarn.lock ./
+
+# disabling ssl for npm for Dev or if you are behind proxy
+RUN npm set strict-ssl false
+
+## installing and Storing node modules on a separate layer will
+## prevent unnecessary npm installs at each build
+RUN npm i && mkdir /app && mv ./node_modules ./app
+
+# Change directory so that our commands run inside this new directory
+WORKDIR /app
+
+# Get all the code needed to run the app
+COPY . /app/
+
+# Expose the port the app runs in
+EXPOSE 3000
+
+# Serve the app
+CMD ["npm", "start"]
