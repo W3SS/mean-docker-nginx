@@ -6,6 +6,12 @@ import UserModel from '../schemas/User'
 
 class UserController {
 
+  public async authenticate(): Promise<Response> {
+    const userToAuthenticate = UserModel.findOne({})
+    
+    return res.json({})
+  }
+
   public async index(res: Response, err: ErrorRequestHandler): Promise<Response> {
 
     const users = await UserModel.find()
@@ -26,7 +32,7 @@ class UserController {
 
   public async store(req: Request, res: Response, err: ErrorRequestHandler ): Promise<Response> {
 
-    const users = await UserModel.find({ username: req.body.username.trim(), email: req.body.email })
+    const users = await UserModel.find({ username: req.body.username.trim() })
 
     console.log(users);
     if (err) {
@@ -41,9 +47,7 @@ class UserController {
         status: "error",
         message: req.body.username + " is already taken"
       })
-    } else if (email) {
-
-    }
+    } 
 
     const usertoCreate = new UserModel()
     usertoCreate.username = req.body.username ? req.body.username : usertoCreate.username;
@@ -99,7 +103,14 @@ class UserController {
    * delete
    */
   public async delete(res: Response, req: Request, err:? ErrorRequestHandler): Promise<Response> {
-    const userToDelete
+    const userToDelete = UserModel.remove({_id: req.params.user_id})
+
+    if (err) res.send(err)
+
+    return res.json({
+      status: "success",
+      message: "User deleted !"
+    })
   }
 }
 
